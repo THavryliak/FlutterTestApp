@@ -29,12 +29,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Color> _gradColors = [Colors.white, Colors.white];
 
-  void _changeGradientColor() {
+  Color colorGenerator() {
+    return Color.fromARGB(255, Random().nextInt(256), Random().nextInt(256),
+        Random().nextInt(256)
+    );
+  }
+
+  void _colorChange() {
     setState(() {
-      _gradColors = [
-        Colors.primaries[Random().nextInt(Colors.primaries.length)],
-        Colors.primaries[Random().nextInt(Colors.primaries.length)]
-      ];
+      _gradColors = List.generate(2, (index) => colorGenerator());
     });
   }
 
@@ -42,32 +45,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          //centerTitle: true,
           title: Text(widget.title),
           leading: Image.asset(
             'images/solid_logo.png',
           ),
         ),
-        //backgroundColor: _color,
         body: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: _gradColors)
+                  colors: _gradColors,
+              )
           ),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              _changeGradientColor();
+              _colorChange();
             },
             child: Center(
               child: Text(
                 "Hey there!\nTap me to see the magic :)",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
               ),
             ),
@@ -76,4 +78,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
